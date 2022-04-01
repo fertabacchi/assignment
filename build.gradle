@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.crypto.portfolio.app.Runner'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
+
+group 'com.crypto'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.210'
+
+
+}
+
+
+test {
+    useJUnitPlatform()
+}
