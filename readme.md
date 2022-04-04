@@ -30,7 +30,7 @@ want to get the update containing the equity price.
 In order to keep it simple, each portfolio update will also contain the full view of equity prices which are involved
 in the option calculations.
 
-##CORE module
+## CORE module
 This module contains the PortfolioService which starts and coordinate the whole process.
 Subscribers can register themselves and they'll be allocated a queue to consume portfolio updates from.
 Repeatedly, the service fetches all the tickers from the open positions, retrieves the static data and uses it to
@@ -47,7 +47,7 @@ plus another optional time interval which is the "real" time the service should 
 Basically the service will produce portfolio updates each X seconds, pretending that Y seconds have passed instead
 (X and Y can be the same, of course, reproducing a real-time experience)
 
-##APP module
+## APP module
 this contains mainly the custom implementation of the interfaces defined in the *api* module, plus starts the 
 actual service. 
 The implementations follow the guidelines of the document: positions from a CSV, brownian motion equity price
@@ -66,19 +66,19 @@ detached thread is running the PortfolioService. An improved version of it would
 many instruments.
 
 
-##numbers and precision
+## numbers and precision
 Users will receive BigInteger for the number of positions and BigDecimal for prices. Internally, calculations
 are performed with a combination of doubles and BigDecimal; doubles are more efficient and are preferred for 
 figuring out multiplication factors, when they're about to be multiplied by prices they're transformed in BigDecimal.
 Internal BigDecimal calculations keep a precision of 13, reduced to 10 when we return the final computation to users.
 
-##database
+## database
 the H2 database works with only two tables. One for equities and one for options. The option records own a FK
 towards their underlying equities. The mock "reference data service" can tell which table should be looked up to
 find a ticker by checking the format of the ticker. This lightweight approach was preferred to a proper table hierarchy
 which would be fit in case we handle many types of financial instruments.
 
-##cumulative probability calculation
+## cumulative probability calculation
 since I didn't quite know how to compute the cumulative probability in a normal distribution,
 I used a dump sampling approach. By generating a few thousands random gaussian numbers and arranging them in a 
 SortedSet, finding the cumulative odds up till X means figuring out how which fraction of the random samples
